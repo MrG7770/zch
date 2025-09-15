@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>新增售后记录 - 手机店管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+  <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+
+<body>
+  <div class="layuimini-container">
+    <div class="layuimini-main">
+      <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>新增售后记录</legend>
+      </fieldset>
+
+      <form class="layui-form" lay-filter="addAfterSaleRecordForm">
+        <!-- 基本信息区域 -->
+        <div class="layui-form-item">
+          <label class="layui-form-label">售后类型</label>
+          <div class="layui-input-block">
+            <select name="afterSaleType" lay-verify="required">
+              <option value="">请选择售后类型</option>
+              <option value="维修服务">维修服务</option>
+              <option value="退换货">退换货</option>
+              <option value="软件咨询">软件咨询</option>
+              <option value="配件更换">配件更换</option>
+              <option value="其他服务">其他服务</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">服务时间</label>
+          <div class="layui-input-block">
+            <input type="text" name="serviceTime" lay-verify="required" placeholder="请输入服务时间，格式如：2025-09-10 14:30:00" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">客户姓名</label>
+          <div class="layui-input-block">
+            <input type="text" name="customerName" lay-verify="required" placeholder="请输入客户姓名" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">联系电话</label>
+          <div class="layui-input-block">
+            <input type="text" name="phoneNumber" lay-verify="required|phone" placeholder="请输入联系电话" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">手机型号</label>
+          <div class="layui-input-block">
+            <input type="text" name="deviceModel" lay-verify="required" placeholder="请输入手机型号" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">问题描述</label>
+          <div class="layui-input-block">
+            <textarea name="description" placeholder="请详细描述手机出现的问题" class="layui-textarea" lay-verify="description"></textarea>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">处理方法</label>
+          <div class="layui-input-block">
+            <textarea name="handlingMethod" placeholder="请输入处理该问题的方法（选填）" class="layui-textarea" lay-verify="handlingMethod"></textarea>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">处理人员</label>
+          <div class="layui-input-block">
+            <input type="text" name="handler" lay-verify="required" placeholder="请输入处理人员姓名" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">费用（元）</label>
+          <div class="layui-input-block">
+            <input type="text" name="cost" lay-verify="number" placeholder="请输入此次售后产生的费用，若免费则填0" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">备注信息</label>
+          <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入备注信息（选填）" class="layui-textarea" lay-verify="remark"></textarea>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submitAddAfterSaleRecord">添加记录</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="cancelAddBtn">取消</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+  <script>
+    layui.use(['form', 'layer', 'jquery'], function () {
+      var form = layui.form,
+        layer = layui.layer,
+        $ = layui.jquery;
+
+      // 自定义验证规则 - 针对新增售后记录场景
+      form.verify({
+        // 联系电话验证，简单示例，可根据实际需求完善更严格的验证
+        phone: function (value) {
+          if (!/^1[3-9]\d{9}$/.test(value)) {
+            return '请输入正确的11位手机号码';
+          }
+        },
+        // 问题描述验证：最多500个字符
+        description: function (value) {
+          if (value.length > 500) {
+            return '问题描述不能超过500个字符';
+          }
+        },
+        // 处理方法验证：最多500个字符
+        handlingMethod: function (value) {
+          if (value.length > 500) {
+            return '处理方法不能超过500个字符';
+          }
+        },
+        // 备注验证：最多200个字符
+        remark: function (value) {
+          if (value.length > 200) {
+            return '备注信息不能超过200个字符';
+          }
+        },
+        // 费用验证：必须为数字（可以是小数等合理数值，比如可能有部分费用精确到角、分）
+        number: function (value) {
+          if (isNaN(value)) {
+            return '请输入有效的数字作为费用金额';
+          }
+        }
+      });
+
+      // 监听表单提交
+      form.on('submit(submitAddAfterSaleRecord)', function (data) {
+        // 显示加载层
+        var loadingIndex = layer.load(2);
+
+        // 模拟提交到服务器
+        setTimeout(function () {
+          layer.close(loadingIndex);
+
+          // 显示成功提示
+          layer.alert('售后记录添加成功！', {
+            title: '成功',
+            icon: 1
+          }, function (index) {
+            // 关闭提示框
+            layer.close(index);
+
+            // 如果是在弹窗中打开，关闭当前弹窗并刷新父页面
+            if (parent && parent.layer) {
+              var frameIndex = parent.layer.getFrameIndex(window.name);
+              parent.layer.close(frameIndex);
+              parent.location.reload();
+            } else {
+              // 否则重置表单
+              $('form')[0].reset();
+            }
+          });
+        }, 800);
+
+        return false; // 阻止表单跳转
+      });
+
+      // 取消按钮事件
+      $('#cancelAddBtn').click(function () {
+        layer.confirm('确定要取消添加售后记录吗？', {
+          title: '确认取消',
+          icon: 3
+        }, function (index) {
+          layer.close(index);
+
+          // 如果是在弹窗中打开，关闭当前弹窗
+          if (parent && parent.layer) {
+            var frameIndex = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(frameIndex);
+          } else {
+            // 否则返回上一页
+            history.back();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

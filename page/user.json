@@ -1,0 +1,84 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "brand": "苹果",
+      "model": "iPhone 15 Pro Max",
+      "price": "约8999元",
+      "stock": 130
+    },
+    {
+      "id": 10001,
+      "brand": "华为",
+      "model": "Mate 60 Pro",
+      "price": "约6999元",
+      "stock": 120
+    },
+    {
+      "id": 10002,
+      "brand": "小米",
+      "model": "小米14 Ultra",
+      "price": "约5999元",
+      "stock": 50
+    },
+    {
+      "id": 10003,
+      "brand": "OPPO",
+      "model": "Find X7 Pro",
+      "price": "约5499元",
+      "stock": 60
+    },
+    {
+      "id": 10004,
+      "brand": "vivo",
+      "model": "X100 Pro",
+      "price": "约5499元",
+      "stock": 65
+    },
+    {
+      "id": 10005,
+      "brand": "荣耀",
+      "model": "Magic6 Pro",
+      "price": "约5699元",
+      "stock": 30
+    },
+    {
+      "id": 10006,
+      "brand": "三星",
+      "model": "Galaxy S24 Ultra",
+      "price": "约7699元",
+      "stock": 40
+    },
+    {
+      "id": 10007,
+      "brand": "一加",
+      "model": "12",
+      "price": "约4299元",
+      "stock": 20
+    },
+    {
+      "id": 10008,
+      "brand": "真我",
+      "model": "GT5 Pro",
+      "price": "约3699元",
+      "stock": 150
+    },
+    {
+      "id": 10009,
+      "brand": "魅族",
+      "model": "20 Pro",
+      "price": "约4399元",
+      "stock": 60
+    },
+    {
+      "id": 10010,
+      "brand": "iQOO",
+      "model": "12 Pro",
+      "price": "约4699元",
+      "stock": 80
+    }
+  ]
+}

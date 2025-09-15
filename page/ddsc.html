@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>手机销售订单生成</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <link rel="stylesheet" href="../js/lay-module/step-lay/step.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 40px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <div carousel-item>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">手机品牌:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="phoneBrand" placeholder="请填写手机品牌" class="layui-input" lay-verify="required" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">手机型号:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="phoneModel" placeholder="请填写手机型号" class="layui-input" lay-verify="required" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">购买数量:</label>
+                                        <div class="layui-input-block">
+                                            <input type="number" name="quantity" placeholder="请填写购买数量" value="1" min="1" class="layui-input" lay-verify="required|number" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">销售单价:</label>
+                                        <div class="layui-input-block">
+                                            <input type="number" name="unitPrice" placeholder="请填写销售单价" class="layui-input" lay-verify="required|number" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">付款方式:</label>
+                                        <div class="layui-input-block">
+                                            <select name="paymentMethod" lay-verify="required">
+                                                <option value="cash" selected>现金</option>
+                                                <option value="alipay">支付宝</option>
+                                                <option value="wechat">微信支付</option>
+                                                <option value="card">银行卡</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">客户姓名:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="customerName" placeholder="请填写客户姓名" class="layui-input" lay-verify="required" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">联系电话:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="customerPhone" placeholder="请填写联系电话" class="layui-input" lay-verify="required|phone" required />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">客户类型:</label>
+                                        <div class="layui-input-block">
+                                            <select name="customerType" lay-verify="required">
+                                                <option value="ordinary" selected>普通客户</option>
+                                                <option value="member">会员客户</option>
+                                                <option value="enterprise">企业客户</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">保修期限:</label>
+                                        <div class="layui-input-block">
+                                            <select name="warrantyPeriod" lay-verify="required">
+                                                <option value="12" selected>12个月</option>
+                                                <option value="24">24个月</option>
+                                                <option value="36">36个月</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注信息:</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="remarks" placeholder="请输入备注信息" class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                                &emsp;确认订单&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
+                                        订单生成成功
+                                    </div>
+                                    <div style="font-size: 16px;color: #666;margin-top: 20px;">订单编号: <span id="orderNumber" style="color: #1E9FFF;">ORD-20230915-12345</span></div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 10px;">请妥善保管订单信息，凭此单享受售后服务</div>
+                                </div>
+                                <div style="text-align: center;margin-top: 50px;">
+                                    <button class="layui-btn next" onclick="window.location.href='../page/ddsc'>新增订单</button>
+                                    <button class="layui-btn layui-btn-primary" onclick="window.location.href='../page/ddxx.html'>查看订单列表</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
+                        <h3>订单说明</h3><br>
+                        <h4>保修政策</h4>
+                        <p>1. 所有手机产品享受国家三包政策，凭订单和保修卡在保修期内可享受免费维修服务</p>
+                        <p>2. 人为损坏、进水、自行拆机等情况不在免费保修范围内</p>
+                        <br><h4>退换货说明</h4>
+                        <p>1. 产品签收后7天内，无人为损坏且包装完好可享受无理由退货</p>
+                        <p>2. 15天内产品出现质量问题可凭检测报告更换同款新机</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'step', 'layer'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            step = layui.step,
+            layer = layui.layer;
+
+        // 生成随机订单号
+        function generateOrderNumber() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+            return `ORD-${year}${month}${day}-${random}`;
+        }
+
+        // 渲染步骤条
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%',
+            stepWidth: '750px',
+            height: '500px',
+            stepItems: [{
+                title: '商品信息'
+            }, {
+                title: '客户信息'
+            }, {
+                title: '订单完成'
+            }]
+        });
+
+        // 第一步提交
+        form.on('submit(formStep)', function (data) {
+            // 简单验证
+            if (!data.field.phoneBrand || !data.field.phoneModel) {
+                layer.msg('请填写手机品牌和型号', {icon: 2});
+                return false;
+            }
+            if (data.field.quantity < 1 || data.field.unitPrice <= 0) {
+                layer.msg('请填写有效的数量和价格', {icon: 2});
+                return false;
+            }
+            step.next('#stepForm');
+            return false;
+        });
+
+        // 第二步提交
+        form.on('submit(formStep2)', function (data) {
+            // 验证客户信息
+            if (!data.field.customerName || !data.field.customerPhone) {
+                layer.msg('请填写客户姓名和联系电话', {icon: 2});
+                return false;
+            }
+            // 生成并显示订单号
+            document.getElementById('orderNumber').textContent = generateOrderNumber();
+            step.next('#stepForm');
+            return false;
+        });
+
+        // 上一步按钮
+        $('.pre').click(function () {
+            step.pre('#stepForm');
+        });
+
+        // 下一步/新增订单按钮
+        $('.next').click(function () {
+            // 重置表单
+            $('.layui-form')[0].reset();
+            $('.layui-form')[1].reset();
+            form.render();
+            // 返回第一步
+            step.index = 0;
+            step.render({
+                elem: '#stepForm',
+                filter: 'stepForm',
+                width: '100%',
+                stepWidth: '750px',
+                height: '500px',
+                stepItems: [{
+                    title: '商品信息'
+                }, {
+                    title: '客户信息'
+                }, {
+                    title: '订单完成'
+                }]
+            });
+        });
+    });
+</script>
+</body>
+</html>
+    

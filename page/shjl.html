@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>手机销售售后记录</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" width="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+  <link rel="stylesheet" href="../css/layuimini.css" media="all">
+</head>
+
+<body>
+  <div class="layui-form layui-form-pane" style="margin: 10px;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">售后记录ID</label>
+      <div class="layui-input-inline">
+        <input type="text" name="id" placeholder="请输入售后记录ID" autocomplete="off" class="layui-input">
+      </div>
+      <label class="layui-form-label">售后类型</label>
+      <div class="layui-input-inline">
+        <select name="afterSaleType" class="layui-select">
+          <option value="">全部类型</option>
+          <option value="维修服务">维修服务</option>
+          <option value="退换货">退换货</option>
+          <option value="软件咨询">软件咨询</option>
+          <option value="配件更换">配件更换</option>
+          <option value="其他服务">其他服务</option>
+        </select>
+      </div>
+      <label class="layui-form-label">处理状态</label>
+      <div class="layui-input-inline">
+        <select name="status" class="layui-select">
+          <option value="">全部状态</option>
+          <option value="已处理">已处理</option>
+          <option value="待处理">待处理</option>
+          <option value="处理中">处理中</option>
+          <option value="已回访">已回访</option>
+        </select>
+      </div>
+      <div class="layui-input-inline">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- 工具栏设置： 添加售后记录、批量删除 -->
+    <script type="text/html" id="afterSaleTableToolbar">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 新增售后记录 </button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 批量删除 </button>
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="export"> 导出记录 </button>
+      </div>
+    </script>
+
+    <!-- 数据表格定义 -->
+    <table class="layui-hide" id="afterSaleTable" lay-filter="afterSaleTableFilter"></table>
+
+    <!--处理状态列-->
+    <script type="text/html" id="afterSaleStatus">
+      {{#  if(d.status === '已回访'){ }}
+      <span class="layui-badge layui-bg-green">已回访</span>
+      {{#  } else if(d.status === '已处理'){ }}
+      <span class="layui-badge layui-bg-blue">已处理</span>
+      {{#  } else if(d.status === '待处理'){ }}
+      <span class="layui-badge layui-bg-yellow">待处理</span>
+      {{#  } else { }}
+      <span class="layui-badge layui-bg-red">处理中</span>
+      {{#  } }}
+    </script>
+
+    <!-- 定义表格最后一列：操作 -->
+    <script type="text/html" id="afterSaleTableOperation">
+      <a class="layui-btn  layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+      <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="print">打印凭证</a>
+    </script>
+  </div>
+  <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+  <script>
+    // 使用Layui的表单、表格和弹窗模块
+    layui.use(['form', 'table', 'layer'], function () {
+      var $ = layui.jquery;
+      var form = layui.form;
+      var table = layui.table;
+      var layer = layui.layer;
+      var tableData = []; // 存储表格数据
+      var originalData = []; // 存储原始数据用于恢复
+
+      // 渲染表格，保存表格实例以便重载
+      var tableIns = table.render({
+        elem: '#afterSaleTable',
+        url: 'shjl.json',  // 售后记录数据接口，需根据实际情况修改
+        toolbar: '#afterSaleTableToolbar',
+        defaultToolbar: ['filter', 'exports', 'print', {
+          title: '提示',
+          layEvent: 'LAYTABLE_TIPS',
+          icon: 'layui-icon-tips'
+        }],
+        cols: [[
+          { type: "checkbox", width: 50 },
+          { field: 'id', width: 100, title: '记录ID', sort: true },
+          { field: 'afterSaleType', width: 140, title: '售后类型', sort: true },
+          { field: 'serviceTime', width: 160, title: '服务时间', sort: true },
+          { field: 'customerName', width: 120, title: '客户姓名', sort: true },
+          { field: 'phoneNumber', width: 160, title: '联系电话', sort: true },
+          { field: 'deviceModel', width: 160, title: '手机型号', sort: true },
+          { field: 'description', width: 160, title: '问题描述', sort: true },
+          { field: 'handlingMethod', width: 160, title: '处理方法', sort: true },
+          { field: 'handler', width: 100, title: '处理人员' },
+          { field: 'cost', width: 100, title: '费用（元）' },
+          {
+            field: 'status',
+            width: 100,
+            title: '状态',
+            templet: '#afterSaleStatus',
+            unresize: true,
+            align: "center"
+          },
+          { title: '操作', minWidth: 240, toolbar: '#afterSaleTableOperation', align: "center" }
+        ]],
+        limits: [10, 15, 20, 25, 50, 100],
+        limit: 15,
+        page: true,
+        skin: 'line',
+        done: function (res) {
+          // 保存表格数据到本地变量
+          tableData = JSON.parse(JSON.stringify(res.data));
+          originalData = JSON.parse(JSON.stringify(res.data)); // 深拷贝保存原始数据
+        }
+      });
+
+      // 搜索表单监听
+      form.on('submit(search)', function (data) {
+        // 显示加载层，提示用户正在搜索
+        var loadingIndex = layer.load(2, {
+          shade: [0.1, '#fff']
+        });
+
+        // 执行表格重载，传递搜索条件
+        tableIns.reload({
+          where: data.field, // 搜索的条件
+          page: {
+            curr: 1 // 重新从第1页开始
+          },
+          done: function (res, curr, count) {
+            // 关闭加载层
+            layer.close(loadingIndex);
+            // 更新本地数据
+            tableData = JSON.parse(JSON.stringify(res.data));
+            originalData = JSON.parse(JSON.stringify(res.data));
+            // 弹出最终的搜索信息，格式化为JSON字符串
+            layer.open({
+              title: '搜索条件',
+              content: JSON.stringify(data.field, null, 2),
+              btn: ['确定'],
+              btnAlign: 'c',
+              shade: 0.1,
+              area: ['400px', 'auto']
+            });
+          }
+        });
+        return false;
+      });
+
+      /**
+       * toolbar监听事件（工具栏监听事件）
+       */
+      table.on('toolbar(afterSaleTableFilter)', function (obj) {
+        console.log("工具栏事件:", obj.event); // 调试信息
+
+        if (obj.event === 'add') {  // 监听添加操作
+          var index = layer.open({
+            title: '新增售后记录',
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: '../page/addshjl.html'
+          });
+          $(window).on("resize", function () {
+            layer.full(index);
+          });
+        } else if (obj.event === 'delete') {  // 监听批量删除操作
+          // 使用表格ID获取选中状态
+          var checkStatus = table.checkStatus('afterSaleTable');
+          console.log("选中状态:", checkStatus); // 调试信息
+
+          var selectedData = checkStatus.data;
+
+          if (selectedData.length === 0) {
+            layer.msg('请选择需要删除的记录');
+            return;
+          }
+
+          // 确认删除
+          layer.confirm('确定要删除选中的 ' + selectedData.length + ' 条记录吗？', { icon: 3 }, function (index) {
+            // 使用字符串比较确保ID匹配正确
+            var selectedIds = selectedData.map(item => String(item.id));
+
+            console.log("待删除ID:", selectedIds); // 调试信息
+
+            // 过滤数据
+            tableData = tableData.filter(item =>!selectedIds.includes(String(item.id)));
+
+            // 重新渲染表格
+            tableIns.reload({
+              data: tableData,
+              url: null,
+              page: {
+                curr: 1 // 重置到第一页
+              }
+            });
+
+            layer.close(index);
+            layer.msg('删除成功，共删除 ' + selectedData.length + ' 条记录');
+          });
+        } else if (obj.event === 'export') {  // 导出记录
+          layer.confirm('确定要导出所有售后记录吗？', { icon: 3 }, function (index) {
+            layer.close(index);
+            layer.msg('正在导出售后记录...');
+            // 这里添加导出逻辑
+          });
+        }
+      });
+
+      // 监听表格复选框选择
+      table.on('checkbox(afterSaleTableFilter)', function (obj) {
+        console.log("复选框选择:", obj);
+      });
+
+      // 监听表格最后一列的操作
+      table.on('tool(afterSaleTableFilter)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'detail') {
+          var index = layer.open({
+            title: '售后详情 - ' + data.id,
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: './page/afterSaleDetail.html?id=' + data.id
+          });
+          $(window).on("resize", function () {
+            layer.full(index);
+          });
+          return false;
+        } else if (obj.event == 'edit') {
+          var index = layer.open({
+            title: '编辑售后记录 - ' + data.id,
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: '../page/editorshjl.html',
+          });
+          $(window).on("resize", function () {
+            layer.full(index);
+          });
+          return false;
+        } else if (obj.event == 'delete') {
+          layer.confirm('您确认删除该售后记录吗？', { icon: 3 }, function (index) {
+            obj.del();
+            // 更新本地数据
+            tableData = tableData.filter(item => String(item.id)!== String(data.id));
+            layer.close(index);
+            layer.msg('删除成功');
+          });
+        } else if (obj.event == 'print') {
+          layer.msg('正在打印售后凭证: ' + data.id);
+          // 这里添加打印逻辑
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

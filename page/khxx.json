@@ -1,0 +1,98 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "customerId": "C001",
+      "customerName": "张三",
+      "customerPhone": "13812345678",
+      "phoneModel": "华为P60 Pro",
+      "purchaseDate": "2023-05-10",
+      "warrantyEndDate": "2024-05-10",
+      "type": "普通客户"
+    },
+    {
+      "customerId": "C002",
+      "customerName": "李四",
+      "customerPhone": "13687654321",
+      "phoneModel": "苹果iPhone 14 Pro",
+      "purchaseDate": "2023-08-15",
+      "warrantyEndDate": "2024-08-15",
+      "type": "会员客户"
+    },
+    {
+      "customerId": "C003",
+      "customerName": "王五",
+      "customerPhone": "13998765432",
+      "phoneModel": "小米13 Ultra",
+      "purchaseDate": "2023-10-20",
+      "warrantyEndDate": "2024-10-20",
+      "type": "企业客户"
+    },
+    {
+      "customerId": "C004",
+      "customerName": "赵六",
+      "customerPhone": "13567890123",
+      "phoneModel": "OPPO Find X6",
+      "purchaseDate": "2023-06-05",
+      "warrantyEndDate": "2024-06-05",
+      "type": "普通客户"
+    },
+    {
+      "customerId": "C005",
+      "customerName": "孙七",
+      "customerPhone": "13723456789",
+      "phoneModel": "vivo X90",
+      "purchaseDate": "2023-09-30",
+      "warrantyEndDate": "2024-09-30",
+      "type": "会员客户"
+    },
+    {
+      "customerId": "C006",
+      "customerName": "周八",
+      "customerPhone": "13456789012",
+      "phoneModel": "荣耀Magic5",
+      "purchaseDate": "2023-11-12",
+      "warrantyEndDate": "2024-11-12",
+      "type": "普通客户"
+    },
+    {
+      "customerId": "C007",
+      "customerName": "吴九",
+      "customerPhone": "13389012345",
+      "phoneModel": "三星Galaxy S23",
+      "purchaseDate": "2023-07-22",
+      "warrantyEndDate": "2024-07-22",
+      "type": "企业客户"
+    },
+    {
+      "customerId": "C008",
+      "customerName": "郑十",
+      "customerPhone": "13212378901",
+      "phoneModel": "一加Ace 2",
+      "purchaseDate": "2023-12-05",
+      "warrantyEndDate": "2024-12-05",
+      "type": "会员客户"
+    },
+    {
+      "customerId": "C009",
+      "customerName": "钱十一",
+      "customerPhone": "13145678902",
+      "phoneModel": "魅族20",
+      "purchaseDate": "2023-04-18",
+      "warrantyEndDate": "2024-04-18",
+      "type": "普通客户"
+    },
+    {
+      "customerId": "C010",
+      "customerName": "冯十二",
+      "customerPhone": "13098765432",
+      "phoneModel": "红米Note 12 Pro",
+      "purchaseDate": "2023-03-14",
+      "warrantyEndDate": "2024-03-14",
+      "type": "企业客户"
+    }
+  ]
+}
+    

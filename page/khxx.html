@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>手机销售系统 - 客户管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+  <link rel="stylesheet" href="../css/layuimini.css" media="all">
+</head>
+
+<body>
+  <div class="layui-form layui-form-pane" style="margin: 10px;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">客户编号</label>
+      <div class="layui-input-inline">
+        <input type="text" name="customerId" placeholder="请输入客户编号" autocomplete="off" class="layui-input">
+      </div>
+      <label class="layui-form-label">客户姓名</label>
+      <div class="layui-input-inline">
+        <input type="text" name="customerName" placeholder="请输入客户姓名" autocomplete="off" class="layui-input">
+      </div>
+      <label class="layui-form-label">客户类型</label>
+      <div class="layui-input-inline">
+        <select name="customerType">
+          <option value="">全部类型</option>
+          <option value="普通客户">普通客户</option>
+          <option value="会员客户">会员客户</option>
+          <option value="企业客户">企业客户</option>
+        </select>
+      </div>
+      <div class="layui-input-inline">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <script type="text/html" id="customerTableToolbar">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 新增客户 </button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 批量删除 </button>
+        <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="export"> 导出客户数据 </button>
+        <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="import"> 导入客户数据 </button>
+      </div>
+    </script>
+    <table class="layui-hide" id="customerTable" lay-filter="customerTableFilter"></table>
+    <script type="text/html" id="customerType">
+      {{#  if(d.type === '普通客户'){ }}
+      <span class="layui-badge layui-bg-blue">普通客户</span>
+      {{#  } else if(d.type === '会员客户') { }}
+      <span class="layui-badge layui-bg-orange">会员客户</span>
+      {{#  } else { }}
+      <span class="layui-badge layui-bg-green">企业客户</span>
+      {{#  } }}
+    </script>
+    <script type="text/html" id="customerTableOperation">
+      <a class="layui-btn  layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+    </script>
+  </div>
+  <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+  <script>
+    layui.use(['form', 'table', 'layer'], function () {
+      var $ = layui.jquery;
+      var form = layui.form;
+      var table = layui.table;
+      var layer = layui.layer;
+      var tableData = [];
+      var originalData = [];
+      var tableIns = table.render({
+        elem: '#customerTable',
+        url: 'khxx.json',
+        toolbar: '#customerTableToolbar',
+        defaultToolbar: ['filter', 'exports', 'print', {
+          title: '提示',
+          layEvent: 'LAYTABLE_TIPS',
+          icon: 'layui-icon-tips'
+        }],
+        cols: [[
+          { type: "checkbox", width: 50 },
+          { field: 'customerId', width: 120, title: '客户编号', sort: true },
+          { field: 'customerName', width: 100, title: '客户姓名', sort: true },
+          { field: 'customerPhone', width: 120, title: '联系电话' },
+          { field: 'phoneModel', width: 150, title: '购买手机型号', sort: true },
+          { field: 'purchaseDate', width: 150, title: '购买日期', sort: true },
+          { field: 'warrantyEndDate', width: 150, title: '保修截止日期', sort: true },
+          {
+            field: 'type',
+            width: 100,
+            title: '客户类型',
+            templet: '#customerType',
+            unresize: true,
+            align: "center",
+            sort: true
+          },
+          { title: '操作', minWidth: 200, toolbar: '#customerTableOperation', align: "center" }
+        ]],
+        limits: [10, 15, 20, 25, 50, 100],
+        limit: 15,
+        page: true,
+        skin: 'line',
+        done: function (res) {
+          tableData = JSON.parse(JSON.stringify(res.data));
+          originalData = JSON.parse(JSON.stringify(res.data));
+        }
+      });
+      form.on('submit(search)', function (data) {
+        var loadingIndex = layer.load(2, {
+          shade: [0.1, '#fff']
+        });
+        tableIns.reload({
+          where: data.field,
+          page: {
+            curr: 1
+          },
+          done: function (res, curr, count) {
+            layer.close(loadingIndex);
+            tableData = JSON.parse(JSON.stringify(res.data));
+            originalData = JSON.parse(JSON.stringify(res.data));
+            layer.open({
+              title: '搜索条件',
+              content: JSON.stringify(data.field, null, 2),
+              btn: ['确定'],
+              btnAlign: 'c',
+              shade: 0.1,
+              area: ['400px', 'auto']
+            });
+          }
+        });
+        return false;
+      });
+      table.on('toolbar(customerTableFilter)', function (obj) {
+        if (obj.event === 'add') {
+          var index = layer.open({
+            title: '新增客户',
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: '../page/addkhxx.html'
+          });
+          $(window).on("resize", function () {
+            layer.full(index);
+          });
+        } else if (obj.event === 'delete') {
+          var checkStatus = table.checkStatus('customerTable');
+          var selectedData = checkStatus.data;
+          if (selectedData.length === 0) {
+            layer.msg('请选择需要删除的客户');
+            return;
+          }
+          layer.confirm('确定要删除选中的 ' + selectedData.length + ' 条客户信息吗？', {
+            icon: 3
+          }, function (index) {
+            var selectedIds = selectedData.map(item => String(item.customerId));
+            tableData = tableData.filter(item =>!selectedIds.includes(String(item.customerId)));
+            tableIns.reload({
+              data: tableData,
+              url: null,
+              page: {
+                curr: 1
+              }
+            });
+            layer.close(index);
+            layer.msg('删除成功，共删除 ' + selectedData.length + ' 条客户信息');
+          });
+        } else if (obj.event === 'export') {
+          layer.confirm('确定要导出所有客户数据吗？', {
+            icon: 3
+          }, function (index) {
+            layer.close(index);
+            layer.msg('正在导出客户数据，请稍候...');
+          });
+        } else if (obj.event === 'import') {
+          layer.open({
+            title: '导入客户数据',
+            content: '请选择Excel文件导入客户数据',
+            area: ['400px', '200px'],
+            btn: ['选择文件', '取消'],
+            btn1: function (index, layero) {
+              layer.close(index);
+              layer.msg('文件上传成功，正在处理数据...');
+            }
+          });
+        }
+      });
+      table.on('checkbox(customerTableFilter)', function (obj) {
+        console.log("复选框选择:", obj);
+      });
+      table.on('tool(customerTableFilter)', function (obj) {
+        var data = obj.data;
+        if (obj.event == 'edit') {
+          var index = layer.open({
+            title: '编辑客户 - ' + data.customerId,
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: '../page/editorkhxx.html'
+          });
+          $(window).on("resize", function () {
+            layer.full(index);
+          });
+          return false;
+        } else if (obj.event == 'view') {
+          layer.open({
+            title: '客户详情 - ' + data.customerId,
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['800px', '600px'],
+            content: '../page/view_customer.html?id=' + data.customerId
+          });
+        } else if (obj.event == 'delete') {
+          layer.confirm('您确认删除该客户信息吗？', {
+            icon: 3
+          }, function (index) {
+            obj.del();
+            tableData = tableData.filter(item => String(item.customerId)!== String(data.customerId));
+            layer.close(index);
+            layer.msg('客户信息删除成功');
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

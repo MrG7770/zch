@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>库存信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/layuimini.css" media="all">
+</head>
+
+<body>
+    <div>
+        <div>
+            <!-- 查询条件开始 -->
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">手机品牌</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phoneBrand" placeholder="请输入手机品牌" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">型号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phoneModel" placeholder="请输入型号" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">设置库存数量</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" name="stockQuantity" placeholder="请输入设置库存数量"
+                                        autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i>完成</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+            <!-- 查询条件结束 -->
+
+            <!-- 工具栏设置： 添加用户、批量删除，这里id的值由程序员自定-->
+            <script type="text/html" id="studentTableToolbar">
+                <div class="layui-btn-container">
+                    <!-- 这里的lay-event="add"和delete在后面的JS代码中要用 -->
+                    <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">添加库存</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">批量删除</button>
+                </div>
+            </script>
+            <!--工具栏设置结束-->
+
+            <!-- 数据表格定义，先隐藏起来，内容由后面的JS代码动态产生；lay-filter="studentTableFilter"在后面的JS代码里用 -->
+            <table class="layui-hide" id="studentTable" lay-filter="studentTableFilter"></table>
+
+            <!--用户状态列（看表格预览效果），id="userStatus"是程序员自定，后面JS中用-->
+            <script type="text/html" id="userStatus">
+                <input type="checkbox" name="stockStatus" lay-skin="switch" lay-text="充足|缺货" lay-event="open"
+                    lay-filter="modifystatus" {{ d.stockStatus == '1'? 'checked' : '' }} />
+            </script>
+
+            <!-- 定义表格最后一列：操作 ；lay-event="detail"、 lay-event="edit"、lay-event="delete"后面JS会用到-->
+            <script type="text/html" id="studentTableOperation">
+                <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看详情</a>
+                <a class="layui-btn  layui-btn-xs data-count-edit" lay-event="edit">修改</a>
+                <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            </script>
+        </div>
+    </div>
+    <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+    <script>
+        // 使用Layui的表单和表格模块
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            var table = layui.table;
+
+            // 渲染表格，也就是设置表格
+            table.render({
+                elem: '#studentTable',
+                url: 'kc.json',
+                toolbar: '#studentTableToolbar',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    { type: "checkbox", width: 50 },
+                    { field: 'id', width: 200, title: 'ID', sort: true },
+                    { field: 'pinpai', width: 200, title: '品牌' },
+                    { field: 'xinghao', width: 200, title: '型号' },
+                    { field: 'kucunshuliang', width: 200, title: '库存数量' },
+                    { field: 'kucunyuzhi', title: '库存阈值', width: 200 },
+                    {
+                        field: 'stockStatus',
+                        width: 150,
+                        title: '库存状态',
+                        templet: '#userStatus',
+                        unresize: true,
+                        align: "center"
+                    }
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
+            });
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                var result = JSON.stringify(data.field);
+                layer.alert(result, {
+                    title: '最终的搜索信息'
+                });
+
+                //执行搜索重载
+                table.reload('studentTable', {
+                    page: {
+                        curr: 1
+                    },
+                    where: {
+                        searchParams: result
+                    }
+                }, 'data');
+
+                return false;
+            });
+
+            form.on('switch(modifystatus)', function (obj) {
+                var stockId = obj.elem.closest('tr').data('id');
+                var newStatus = obj.value;
+                // 发送AJAX请求到后端更新库存状态（示例使用jQuery的AJAX，实际根据项目调整）
+                $.ajax({
+                    url: 'updateStockStatus.php',
+                    type: 'POST',
+                    data: {
+                        stockId: stockId,
+                        newStockStatus: newStatus
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            layer.msg('库存状态更新成功');
+                            // 在前端更新表格对应行的状态显示（假设使用Layui的表格模块提供的更新方法）
+                            table.reload('studentTable', {
+                                where: {
+                                    stockId: stockId
+                                }
+                            });
+                        } else {
+                            layer.msg('库存状态更新失败');
+                            // 可考虑将状态还原，此处省略具体代码
+                        }
+                    },
+                    error: function () {
+                        layer.msg('库存状态更新请求出错');
+                        // 可考虑将状态还原，此处省略具体代码
+                    }
+                });
+            });
+
+            /**
+             * toolbar监听事件（工具栏监听事件），就是：添加用户和批量删除
+             */
+            table.on('toolbar(studentTableFilter)', function (obj) {
+                if (obj.event === 'add') {
+                    var index = layer.open({
+                        title: '添加库存',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../page/addkc.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                } else if (obj.event === 'delete') {
+                    var checkStatus = table.checkStatus('studentTable')
+                     , data = checkStatus.data;
+                    var idsToDelete = data.map(function (item) { return item.id; });
+                    // 发送AJAX请求到后端执行批量删除操作（示例使用jQuery的AJAX，实际根据项目调整）
+                    $.ajax({
+                        url: 'deleteStockBatch.php',
+                        type: 'POST',
+                        data: {
+                            stockIds: idsToDelete
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                layer.msg('批量删除成功');
+                                // 重新加载表格数据
+                                table.reload('studentTable', {
+                                    page: {
+                                        curr: 1
+                                    }
+                                });
+                            } else {
+                                layer.msg('批量删除失败');
+                            }
+                        },
+                        error: function () {
+                            layer.msg('批量删除请求出错');
+                        }
+                    });
+                }
+            });
+
+            // 监听表格复选框选择
+            table.on('checkbox(studentTableFilter)', function (obj) {
+                console.log(obj);
+            });
+
+            // 监听表格最后一列的操作：也就是最后一列的3个按钮：查看详情、修改和删除
+            table.on('tool(studentTableFilter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    var index = layer.open({
+                        title: '查看库存详情',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: './kc/kcDetail.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'edit') {
+                    var index = layer.open({
+                        title: '编辑库存信息',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: './kc/kcEdit.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'delete') {
+                    layer.confirm('您确认删除吗？', { icon: 3 }, function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

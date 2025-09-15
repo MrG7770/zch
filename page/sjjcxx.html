@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机基础信息</title>
+    <!-- 引入图标库（增强视觉元素） -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* 基础重置与全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", "Arial", sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        /* 页面标题（新增，提升页面层级） */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        .page-header p {
+            color: #718096;
+            font-size: 16px;
+        }
+        /* 卡片容器（统一间距，适配多设备） */
+        .phone-cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* 卡片主体样式（提升质感） */
+        .phone-card {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        /* 卡片悬停效果（增强交互） */
+        .phone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        /* 卡片标题（品牌色点缀） */
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+        /* 标题下方品牌色小线条（增强识别） */
+        .card-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 60px;
+            height: 3px;
+        }
+        /* 不同品牌标题色定制 */
+        .card-oppo .card-title::after { background-color: #FF3B00; }
+        .card-vivo .card-title::after { background-color: #00B42A; }
+        .card-huawei .card-title::after { background-color: #E60012; }
+        .card-apple .card-title::after { background-color: #000000; }
+        /* 信息与图片容器（响应式布局） */
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        /* 图片容器（统一风格，避免拉伸） */
+        .phone-img-box {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .phone-img-box img {
+            width: auto;
+            height: 85%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        /* 图片悬停放大（增强细节） */
+        .phone-card:hover .phone-img-box img {
+            transform: scale(1.05);
+        }
+        /* 图片下方品牌标识（新增，强化品牌认知） */
+        .phone-img-box .brand-tag {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+        }
+        .card-oppo .brand-tag { background-color: #FF3B00; }
+        .card-vivo .brand-tag { background-color: #00B42A; }
+        .card-huawei .brand-tag { background-color: #E60012; }
+        .card-apple .brand-tag { background-color: #000000; }
+        /* 信息列表（优化排版与视觉） */
+        .info-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .info-list li {
+            font-size: 15px;
+            color: #4a5568;
+            padding-left: 22px;
+            position: relative;
+        }
+        /* 列表前小图标（增强可读性） */
+        .info-list li::before {
+            content: "\f00c";
+            font-family: "FontAwesome";
+            font-size: 12px;
+            color: #48bb78;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .info-list li span {
+            font-weight: 600;
+            color: #2d3748;
+            margin-right: 6px;
+        }
+        /* 响应式适配（平板+手机） */
+        @media (min-width: 768px) {
+            .card-content {
+                flex-direction: row;
+                align-items: center;
+            }
+            .phone-img-box {
+                width: 40%;
+                height: 350px;
+            }
+            .info-list {
+                width: 60%;
+            }
+        }
+        @media (min-width: 992px) {
+            .phone-cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面标题区 -->
+    <div class="page-header">
+        <h1><i class="fa fa-mobile-phone" style="font-size: 1.2em; margin-right: 10px;"></i>手机基础信息库</h1>
+        <p>展示OPPO、vivo、华为、Apple四大品牌热门机型核心参数</p>
+    </div>
+
+    <!-- 卡片容器 -->
+    <div class="phone-cards-container">
+        <!-- OPPO 卡片 -->
+        <div class="phone-card card-oppo">
+            <h2 class="card-title">OPPO Find X7 Ultra 信息</h2>
+            <div class="card-content">
+                <div class="phone-img-box">
+                    <img src="../images/8e2f9f113853594dc52f5c4f35f3e0fa.jpg" alt="OPPO Find X7 Ultra">
+                    <div class="brand-tag">OPPO</div>
+                </div>
+                <ul class="info-list">
+                    <li><span>设备品牌：</span>OPPO</li>
+                    <li><span>设备型号：</span>Find X7 Ultra</li>
+                    <li><span>操作系统：</span>ColorOS 14</li>
+                    <li><span>屏幕尺寸：</span>6.82英寸</li>
+                    <li><span>屏幕分辨率：</span>3168×1440像素</li>
+                    <li><span>处理器：</span>Gen 3</li>
+                    <li><span>运行内存：</span>16GB</li>
+                    <li><span>机身存储：</span>512GB</li>
+                    <li><span>电池容量：</span>5000 mAh</li>
+                    <li><span>网络支持：</span>5G 全网通</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- vivo 卡片 -->
+        <div class="phone-card card-vivo">
+            <h2 class="card-title">vivo X100 Pro 信息</h2>
+            <div class="card-content">
+                <div class="phone-img-box">
+                    <img src="../images/3277118a8f4e4950191a5d790593dd92.jpg" alt="vivo X100 Pro">
+                    <div class="brand-tag">vivo</div>
+                </div>
+                <ul class="info-list">
+                    <li><span>设备品牌：</span>vivo</li>
+                    <li><span>设备型号：</span>X100 Pro</li>
+                    <li><span>操作系统：</span>OriginOS 4</li>
+                    <li><span>屏幕尺寸：</span>6.78英寸</li>
+                    <li><span>屏幕分辨率：</span>3200×1440 像素</li>
+                    <li><span>处理器：</span>天玑9300</li>
+                    <li><span>运行内存：</span>12GB</li>
+                    <li><span>机身存储：</span>512GB</li>
+                    <li><span>电池容量：</span>5400 mAh</li>
+                    <li><span>网络支持：</span>5G 全网通</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 华为 卡片 -->
+        <div class="phone-card card-huawei">
+            <h2 class="card-title">华为 Pura 70 Pro 信息</h2>
+            <div class="card-content">
+                <div class="phone-img-box">
+                    <!-- 建议补充华为机型图片，此处用占位图示例 -->
+                    <img src="../images/db3a5ee9e262e9b62b917577645164ec.jpg" alt="华为 Pura 70 Pro">
+                    <div class="brand-tag">华为</div>
+                </div>
+                <ul class="info-list">
+                    <li><span>设备品牌：</span>华为</li>
+                    <li><span>设备型号：</span>华为Pura 70 pro</li>
+                    <li><span>操作系统：</span>鸿蒙操作系统</li>
+                    <li><span>屏幕尺寸：</span>6.8 英寸</li>
+                    <li><span>屏幕分辨率：</span>2556 x 1179 像素</li>
+                    <li><span>处理器：</span>麒麟9010</li>
+                    <li><span>运行内存：</span>12GB</li>
+                    <li><span>机身存储：</span>512GB</li>
+                    <li><span>电池容量：</span>5050 mAh</li>
+                    <li><span>网络支持：</span>5G 全网通</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Apple 卡片 -->
+        <div class="phone-card card-apple">
+            <h2 class="card-title">Apple iPhone 17 Pro 信息</h2>
+            <div class="card-content">
+                <div class="phone-img-box">
+                    <!-- 建议补充iPhone图片，此处用占位图示例 -->
+                    <img src="../images/c99b36c626d230e12698acc4ff79f7c8.jpg" alt="Apple iPhone 15 Pro">
+                    <div class="brand-tag">Apple</div>
+                </div>
+                <ul class="info-list">
+                    <li><span>设备品牌：</span>Apple</li>
+                    <li><span>设备型号：</span>iPhone 17 Pro</li>
+                    <li><span>操作系统：</span>iOS 17.4</li>
+                    <li><span>屏幕尺寸：</span>6.3 英寸</li>
+                    <li><span>屏幕分辨率：</span>2622×1206 像素</li>
+                    <li><span>处理器：</span>A17 Pro</li>
+                    <li><span>运行内存：</span>12GB</li>
+                    <li><span>机身存储：</span>512GB</li>
+                    <li><span>电池容量：</span>5400 mAh</li>
+                    <li><span>网络支持：</span>5G 全网通</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

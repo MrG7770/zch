@@ -1,0 +1,89 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+            "pinpai": "苹果（Apple）",
+            "xinghao": "iPhone 15 Pro Max",
+            "kucunshuliang": "130",
+            "kucunyuzhi": "100",
+			"stockStatus":"1"
+          },
+          {
+            "id": 10001,
+           "pinpai": "华为（HUAWEI）",
+           "xinghao": "Mate 60 Pro",
+           "kucunshuliang": "120",
+           "kucunyuzhi": "100",
+		   "stockStatus":"1"
+          },{
+            "id": 10002,
+            "pinpai": "小米（Xiaomi）",
+            "xinghao": "小米14 Ultra",
+            "kucunshuliang": "50",
+            "kucunyuzhi": "100",
+			"stockStatus":"0"
+          },{
+            "id": 10003,
+           "pinpai": "OPPO",
+           "xinghao": "Find X7 Pro",
+           "kucunshuliang": "60",
+           "kucunyuzhi": "100",
+		   "stockStatus":"0"
+          },{
+            "id": 10004,
+           "pinpai": "vivo",
+           "xinghao": "X100 Pro",
+           "kucunshuliang": "65",
+           "kucunyuzhi": "100",
+		   "stockStatus":"0"
+		  
+          },{
+            "id": 10005,
+            "pinpai": "荣耀（Honor）",
+            "xinghao": "Magic6 Pro",
+            "kucunshuliang": "30",
+            "kucunyuzhi": "50",
+			"stockStatus":"0"
+			
+          },{
+            "id": 10006,
+           "pinpai": "三星（Samsung）",
+           "xinghao": "Galaxy S24 Ultra",
+           "kucunshuliang": "40",
+           "kucunyuzhi": "50",
+		   "stockStatus":"0"
+          },{
+            "id": 10007,
+           "pinpai": "一加（OnePlus）",
+           "xinghao": "12",
+           "kucunshuliang": "20",
+           "kucunyuzhi": "50",
+		   "stockStatus":"0"
+          },{
+            "id": 10008,
+          "pinpai": "真我（realme）",
+          "xinghao": "GT5 Pro",
+          "kucunshuliang": "150",
+          "kucunyuzhi": "50",
+		  "stockStatus":"1"
+          },{
+            "id": 10009,
+        "pinpai": "魅族（Meizu）",
+        "xinghao": "20 Pro",
+        "kucunshuliang": "60",
+        "kucunyuzhi": "50",
+		"stockStatus":"1"
+          },
+      	{
+      	  "id": 10000,
+       "pinpai": "iQOO",
+            "xinghao": "12 Pro",
+            "kucunshuliang": "80",
+            "kucunyuzhi": "50",
+			"stockStatus":"1"
+          }
+        ]
+      }

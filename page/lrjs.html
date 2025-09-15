@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>手机销售系统</title>
+		<!-- 新 Bootstrap5 核心 CSS 文件 -->
+		<link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+				 
+		<!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+		<script src="https://cdn.staticfile.net/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+		<!-- 图标库 -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	</head>
+	<body>
+		<div class="container mt-4">
+			<h2 class="text-center mb-4">手机销售系统 - 利润计算表</h2>
+			
+			<div class="card mb-4">
+				<div class="card-header bg-primary text-white">
+					<h5 class="mb-0"><i class="bi bi-calculator"></i> 销售数据录入</h5>
+				</div>
+				<div class="card-body">
+					<div class="row g-3">
+						<div class="col-md-4">
+							<label for="salesAmount" class="form-label">总销售额 (元)</label>
+							<input type="number" class="form-control" id="salesAmount" placeholder="输入总销售额">
+						</div>
+						<div class="col-md-4">
+							<label for="productCostRate" class="form-label">产品成本率 (%)</label>
+							<input type="number" class="form-control" id="productCostRate" value="75" placeholder="输入产品成本率">
+						</div>
+						<div class="col-md-4 d-flex align-items-end">
+							<button id="calculateBtn" class="btn btn-danger w-100"><i class="bi bi-calculator-fill"></i> 计算利润</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<table class="table table-bordered text-center">
+				<tr class="bg-primary text-white">
+					<td>项目</td>
+					<td>占销售额比例 (%)</td>
+					<td>金额 (元)</td>
+					<td>说明</td>
+				</tr>
+				<tr>
+					<td>总销售额</td>
+					<td>100%</td>
+					<td id="totalSales">-</td>
+					<td>店铺总营业收入</td>
+				</tr>
+				<tr>
+					<td>产品成本</td>
+					<td id="costPercent">-</td>
+					<td id="productCost">-</td>
+					<td>手机采购成本</td>
+				</tr>
+				<tr>
+					<td>毛利润</td>
+					<td id="grossProfitPercent">-</td>
+					<td id="grossProfit">-</td>
+					<td>销售额 - 产品成本</td>
+				</tr>
+				<tr>
+					<td>店面租金</td>
+					<td>8%</td>
+					<td id="rentCost">-</td>
+					<td>店铺租赁费用</td>
+				</tr>
+				<tr>
+					<td>人员工资</td>
+					<td>6%</td>
+					<td id="salaryCost">-</td>
+					<td>员工薪酬支出</td>
+				</tr>
+				<tr>
+					<td>水电杂费</td>
+					<td>2%</td>
+					<td id="utilityCost">-</td>
+					<td>水电及其他杂费</td>
+				</tr>
+				<tr>
+					<td>营销费用</td>
+					<td>5%</td>
+					<td id="marketingCost">-</td>
+					<td>广告及促销费用</td>
+				</tr>
+				<tr class="table-warning">
+					<td>总费用合计</td>
+					<td>21%</td>
+					<td id="totalExpenses">-</td>
+					<td>所有运营费用总和</td>
+				</tr>
+				<tr class="table-success">
+					<td>净利润</td>
+					<td id="netProfitPercent">-</td>
+					<td id="netProfit">-</td>
+					<td>毛利润 - 总费用</td>
+				</tr>
+			</table>
+			
+			<div class="alert alert-info mt-3" role="alert">
+				<i class="bi bi-info-circle"></i> 提示：实际经营中请根据店铺具体情况调整各项参数。
+			</div>
+		</div>
+
+		<script>
+			// 获取DOM元素
+			const salesAmountInput = document.getElementById('salesAmount');
+			const productCostRateInput = document.getElementById('productCostRate');
+			const calculateBtn = document.getElementById('calculateBtn');
+			
+			// 结果显示元素
+			const totalSalesEl = document.getElementById('totalSales');
+			const costPercentEl = document.getElementById('costPercent');
+			const productCostEl = document.getElementById('productCost');
+			const grossProfitPercentEl = document.getElementById('grossProfitPercent');
+			const grossProfitEl = document.getElementById('grossProfit');
+			const rentCostEl = document.getElementById('rentCost');
+			const salaryCostEl = document.getElementById('salaryCost');
+			const utilityCostEl = document.getElementById('utilityCost');
+			const marketingCostEl = document.getElementById('marketingCost');
+			const totalExpensesEl = document.getElementById('totalExpenses');
+			const netProfitPercentEl = document.getElementById('netProfitPercent');
+			const netProfitEl = document.getElementById('netProfit');
+			
+			// 计算按钮点击事件
+			calculateBtn.addEventListener('click', calculateProfit);
+			
+			// 回车键触发计算
+			salesAmountInput.addEventListener('keyup', function(event) {
+				if (event.key === 'Enter') {
+					calculateProfit();
+				}
+			});
+			
+			productCostRateInput.addEventListener('keyup', function(event) {
+				if (event.key === 'Enter') {
+					calculateProfit();
+				}
+			});
+			
+			// 计算利润函数
+			function calculateProfit() {
+				// 获取输入值
+				const salesAmount = parseFloat(salesAmountInput.value);
+				const productCostRate = parseFloat(productCostRateInput.value);
+				
+				// 验证输入
+				if (isNaN(salesAmount) || salesAmount <= 0) {
+					alert('请输入有效的销售额');
+					salesAmountInput.focus();
+					return;
+				}
+				
+				if (isNaN(productCostRate) || productCostRate <= 0 || productCostRate >= 100) {
+					alert('请输入有效的产品成本率（0-100之间）');
+					productCostRateInput.focus();
+					return;
+				}
+				
+				// 计算各项数值
+				const productCost = salesAmount * (productCostRate / 100);
+				const grossProfit = salesAmount - productCost;
+				const grossProfitPercent = 100 - productCostRate;
+				
+				const rentCost = salesAmount * 0.08; // 租金占8%
+				const salaryCost = salesAmount * 0.06; // 工资占6%
+				const utilityCost = salesAmount * 0.02; // 水电杂费占2%
+				const marketingCost = salesAmount * 0.05; // 营销费用占5%
+				
+				const totalExpenses = rentCost + salaryCost + utilityCost + marketingCost;
+				const netProfit = grossProfit - totalExpenses;
+				const netProfitPercent = (netProfit / salesAmount) * 100;
+				
+				// 显示计算结果，保留两位小数
+				totalSalesEl.textContent = salesAmount.toFixed(2);
+				costPercentEl.textContent = productCostRate.toFixed(1) + '%';
+				productCostEl.textContent = productCost.toFixed(2);
+				grossProfitPercentEl.textContent = grossProfitPercent.toFixed(1) + '%';
+				grossProfitEl.textContent = grossProfit.toFixed(2);
+				rentCostEl.textContent = rentCost.toFixed(2);
+				salaryCostEl.textContent = salaryCost.toFixed(2);
+				utilityCostEl.textContent = utilityCost.toFixed(2);
+				marketingCostEl.textContent = marketingCost.toFixed(2);
+				totalExpensesEl.textContent = totalExpenses.toFixed(2);
+				netProfitPercentEl.textContent = netProfitPercent.toFixed(1) + '%';
+				netProfitEl.textContent = netProfit.toFixed(2);
+				
+				// 添加结果高亮动画
+				netProfitEl.parentElement.classList.add('animate__animated', 'animate__pulse');
+				setTimeout(() => {
+					netProfitEl.parentElement.classList.remove('animate__animated', 'animate__pulse');
+				}, 1000);
+			}
+		</script>
+	</body>
+</html>

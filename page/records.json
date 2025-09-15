@@ -1,0 +1,127 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 10,
+    "data": [
+        {
+            "id": "001",
+            "incomeExpenseType": "销售收入",
+            "recordPeriod": "2025-09-01 - 2025-09-15",
+            "amount": 5000.00,
+            "description": "销售手机型号X10台",
+            "recordDate": "2025-09-10",
+            "settlementDate": "2025-09-12",
+            "recorder": "张三",
+            "voucherNo": "V20250910001",
+            "status": "已结算"
+        },
+        {
+            "id": "002",
+            "incomeExpenseType": "采购支出",
+            "recordPeriod": "2025-09-01 - 2025-09-15",
+            "amount": 3000.00,
+            "description": "采购手机配件一批",
+            "recordDate": "2025-09-08",
+            "settlementDate": "2025-09-10",
+            "recorder": "李四",
+            "voucherNo": "V20250908002",
+            "status": "已结算"
+        },
+        {
+            "id": "003",
+            "incomeExpenseType": "运营成本",
+            "recordPeriod": "2025-09-01 - 2025-09-15",
+            "amount": 800.00,
+            "description": "店铺租金费用",
+            "recordDate": "2025-09-11",
+            "settlementDate": "2025-09-13",
+            "recorder": "王五",
+            "voucherNo": "V20250911003",
+            "status": "已记录"
+        },
+        {
+            "id": "004",
+            "incomeExpenseType": "其他收入",
+            "recordPeriod": "2025-09-01 - 2025-09-15",
+            "amount": 200.00,
+            "description": "旧手机回收收入",
+            "recordDate": "2025-09-14",
+            "settlementDate": "",
+            "recorder": "赵六",
+            "voucherNo": "V20250914004",
+            "status": "待结算"
+        },
+        {
+            "id": "005",
+            "incomeExpenseType": "其他支出",
+            "recordPeriod": "2025-09-01 - 2025-09-15",
+            "amount": 100.00,
+            "description": "办公用品采购",
+            "recordDate": "2025-09-09",
+            "settlementDate": "2025-09-11",
+            "recorder": "孙七",
+            "voucherNo": "V20250909005",
+            "status": "已结算"
+        },
+        {
+            "id": "006",
+            "incomeExpenseType": "销售收入",
+            "recordPeriod": "2025-08-01 - 2025-08-15",
+            "amount": 4500.00,
+            "description": "销售手机型号Y8台",
+            "recordDate": "2025-08-12",
+            "settlementDate": "2025-08-14",
+            "recorder": "周八",
+            "voucherNo": "V20250812006",
+            "status": "已结算"
+        },
+        {
+            "id": "007",
+            "incomeExpenseType": "采购支出",
+            "recordPeriod": "2025-08-01 - 2025-08-15",
+            "amount": 2800.00,
+            "description": "采购手机型号Z5台",
+            "recordDate": "2025-08-10",
+            "settlementDate": "2025-08-12",
+            "recorder": "吴九",
+            "voucherNo": "V20250810007",
+            "status": "已结算"
+        },
+        {
+            "id": "008",
+            "incomeExpenseType": "运营成本",
+            "recordPeriod": "2025-08-01 - 2025-08-15",
+            "amount": 700.00,
+            "description": "员工工资支出",
+            "recordDate": "2025-08-13",
+            "settlementDate": "2025-08-15",
+            "recorder": "郑十",
+            "voucherNo": "V20250813008",
+            "status": "已结算"
+        },
+        {
+            "id": "009",
+            "incomeExpenseType": "其他收入",
+            "recordPeriod": "2025-08-01 - 2025-08-15",
+            "amount": 150.00,
+            "description": "售后服务收费",
+            "recordDate": "2025-08-14",
+            "settlementDate": "",
+            "recorder": "冯十一",
+            "voucherNo": "V20250814009",
+            "status": "待结算"
+        },
+        {
+            "id": "010",
+            "incomeExpenseType": "其他支出",
+            "recordPeriod": "2025-08-01 - 2025-08-15",
+            "amount": 200.00,
+            "description": "水电费支出",
+            "recordDate": "2025-08-11",
+            "settlementDate": "2025-08-13",
+            "recorder": "陈十二",
+            "voucherNo": "V20250811010",
+            "status": "已结算"
+        }
+    ]
+}
