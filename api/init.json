@@ -1,0 +1,128 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/home.html"
+  },
+  "logoInfo": {
+    "title": "手机销售系统",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "首页",
+          "href": "page/home.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "商品管理",
+          "href": "",
+          "icon": "fa fa fa-boxes",
+          "target": "_self",
+          "child": [
+          {
+            "title": "手机基础信息",
+            "href": "page/sjjcxx.html",
+            "icon": "fa  fa-mobile",
+            "target": "_self"
+          }, {
+            "title": "库存管理",
+            "href": "page/kcgl.html",
+            "icon": "fa fa-search",
+            "target": "_self"
+          }, {
+            "title": "商品查询",
+            "href": "page/spcx.html",
+            "icon": "fa fa-search",
+            "target": "_self"
+          }
+        ]
+        },
+        {
+          "title": "客户管理",
+          "href": "",
+          "icon": "fa fa-users",
+          "target": "_self",
+          "child": [
+            {
+              "title": "客户信息登记",
+              "href": "page/addkhxx.html",
+              "icon": "fa fa-user-plus",
+              "target": "_self"
+            },
+			{
+			  "title": "客户信息记录",
+			  "href": "page/khxx.html",
+			  "icon": "fa fa-address-card",
+			  "target": "_self"
+			}
+          ]
+        },
+        {
+          "title": "订单管理",
+          "href": "",
+          "icon": "fa fa-file-invoice",
+          "target": "_self",
+          "child": [
+            {
+              "title": "订单生成",
+              "href": "page/ddsc.html",
+              "icon": "fa fa-plus-square",
+              "target": "_self"
+            }, {
+              "title": "订单信息",
+              "href": "page/ddxx.html",
+              "icon": "fa fa-file-text",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "财务管理",
+          "href": "",
+          "icon": "fa fa-coins",
+          "target": "_self",
+          "child": [
+            {
+              "title": "利润计算",
+              "href": "page/lrjs.html",
+              "icon": "fa fa-calculator",
+              "target": "_self"
+            }, {
+              "title": "收支记录",
+              "href": "page/szjl.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "客户服务",
+          "href": "",
+          "icon": "fa fa-headset",
+          "target": "_self",
+          "child": [
+            {
+              "title": "增加售后记录",
+              "href": "page/addshjl.html",
+              "icon": "fa fa-plus-square",
+              "target": "_self"
+            }, {
+              "title": "售后记录",
+              "href": "page/shjl.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
